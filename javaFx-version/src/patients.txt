@@ -1,0 +1,2 @@
+101,anesh,30,male,kidney patient,Dr. raskshita,2000.0
+103,raju,78,male,heart diseases,Dr. pandita,1000.0

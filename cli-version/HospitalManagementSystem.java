@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.*;
 
 public class HospitalManagementSystem {
 
@@ -7,6 +8,8 @@ public class HospitalManagementSystem {
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
+
+        loadFromFile();
 
         int choice;
 
@@ -66,10 +69,11 @@ public class HospitalManagementSystem {
         int id = sc.nextInt();
         sc.nextLine();
 
-        // Check duplicate ID
+        // Duplicate ID Check
         for (Patient p : patients) {
 
             if (p.patientId == id) {
+
                 System.out.println("Patient ID already exists!");
                 return;
             }
@@ -105,6 +109,8 @@ public class HospitalManagementSystem {
 
         patients.add(patient);
 
+        saveToFile();
+
         System.out.println("Patient Added Successfully!");
     }
 
@@ -120,6 +126,7 @@ public class HospitalManagementSystem {
         System.out.println("\n========== PATIENT RECORDS ==========");
 
         for (Patient p : patients) {
+
             System.out.println(p);
         }
     }
@@ -145,6 +152,7 @@ public class HospitalManagementSystem {
         }
 
         if (!found) {
+
             System.out.println("Patient Not Found!");
         }
     }
@@ -181,6 +189,8 @@ public class HospitalManagementSystem {
                 System.out.print("Enter New Bill Amount: ");
                 p.billAmount = sc.nextDouble();
 
+                saveToFile();
+
                 System.out.println("Patient Updated Successfully!");
 
                 found = true;
@@ -189,6 +199,7 @@ public class HospitalManagementSystem {
         }
 
         if (!found) {
+
             System.out.println("Patient Not Found!");
         }
     }
@@ -207,6 +218,8 @@ public class HospitalManagementSystem {
 
                 patients.remove(p);
 
+                saveToFile();
+
                 System.out.println("Patient Deleted Successfully!");
 
                 found = true;
@@ -215,8 +228,78 @@ public class HospitalManagementSystem {
         }
 
         if (!found) {
+
             System.out.println("Patient Not Found!");
         }
     }
-}
 
+    // SAVE DATA TO FILE
+    static void saveToFile() {
+
+        try {
+
+            BufferedWriter writer = new BufferedWriter(
+                    new FileWriter("patients.txt"));
+
+            for (Patient p : patients) {
+
+                writer.write(
+                        p.patientId + "," +
+                                p.name + "," +
+                                p.age + "," +
+                                p.gender + "," +
+                                p.disease + "," +
+                                p.doctorAssigned + "," +
+                                p.billAmount);
+
+                writer.newLine();
+            }
+
+            writer.close();
+
+        } catch (IOException e) {
+
+            System.out.println("Error Saving File!");
+        }
+    }
+
+    // LOAD DATA FROM FILE
+    static void loadFromFile() {
+
+        try {
+
+            File file = new File("patients.txt");
+
+            if (!file.exists()) {
+
+                return;
+            }
+
+            BufferedReader reader = new BufferedReader(
+                    new FileReader(file));
+
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+
+                String[] data = line.split(",");
+
+                patients.add(
+                        new Patient(
+                                Integer.parseInt(data[0]),
+                                data[1],
+                                Integer.parseInt(data[2]),
+                                data[3],
+                                data[4],
+                                data[5],
+                                Double.parseDouble(data[6])));
+            }
+
+            reader.close();
+
+        } catch (IOException e) {
+
+            System.out.println("Error Loading File!");
+        }
+    }
+}
