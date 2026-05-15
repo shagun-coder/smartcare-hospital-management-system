@@ -13,390 +13,425 @@ import java.io.*;
 
 public class Main extends Application {
 
-    TableView<Patient> table = new TableView<>();
+        TableView<Patient> table = new TableView<>();
 
-    ObservableList<Patient> patientList =
-            FXCollections.observableArrayList();
+        ObservableList<Patient> patientList = FXCollections.observableArrayList();
 
-    TextField idField = new TextField();
-    TextField nameField = new TextField();
-    TextField ageField = new TextField();
-    TextField genderField = new TextField();
-    TextField diseaseField = new TextField();
-    TextField doctorField = new TextField();
-    TextField billField = new TextField();
+        TextField idField = new TextField();
+        TextField nameField = new TextField();
+        TextField ageField = new TextField();
+        TextField genderField = new TextField();
+        TextField diseaseField = new TextField();
+        TextField doctorField = new TextField();
+        TextField billField = new TextField();
 
-    @Override
-    public void start(Stage stage) {
+        @Override
+        public void start(Stage stage) {
 
-        // ================= TITLE =================
+                // ================= TITLE =================
 
-        Label title =
-                new Label("SmartCare Hospital Management System");
+                Label title = new Label("SmartCare Hospital Management System");
 
-        title.setStyle(
-                "-fx-font-size: 28px;" +
-                "-fx-font-weight: bold;" +
-                "-fx-text-fill: #1e293b;"
-        );
+                title.setStyle(
+                                "-fx-font-size: 28px;" +
+                                                "-fx-font-weight: bold;" +
+                                                "-fx-text-fill: #1e293b;");
 
-        // ================= CARDS =================
+                // ================= CARDS =================
 
-        VBox totalPatientsCard = createCard(
-                "Total Patients",
-                "0"
-        );
+                VBox totalPatientsCard = createCard("Total Patients", "0");
 
-        VBox revenueCard = createCard(
-                "Revenue",
-                "₹0"
-        );
+                VBox revenueCard = createCard("Revenue", "₹0");
 
-        VBox doctorsCard = createCard(
-                "Doctors",
-                "12"
-        );
+                VBox doctorsCard = createCard("Doctors", "12");
 
-        HBox cardsBox =
-                new HBox(20,
-                        totalPatientsCard,
-                        revenueCard,
-                        doctorsCard);
+                HBox cardsBox = new HBox(
+                                20,
+                                totalPatientsCard,
+                                revenueCard,
+                                doctorsCard);
 
-        // ================= FORM =================
+                // ================= FORM =================
 
-        GridPane form = new GridPane();
+                GridPane form = new GridPane();
 
-        form.setHgap(15);
-        form.setVgap(15);
-        form.setPadding(new Insets(20));
+                form.setHgap(15);
+                form.setVgap(15);
+                form.setPadding(new Insets(20));
 
-        idField.setPromptText("Patient ID");
-        nameField.setPromptText("Patient Name");
-        ageField.setPromptText("Age");
-        genderField.setPromptText("Gender");
-        diseaseField.setPromptText("Disease");
-        doctorField.setPromptText("Doctor");
-        billField.setPromptText("Bill Amount");
+                idField.setPromptText("Patient ID");
+                nameField.setPromptText("Patient Name");
+                ageField.setPromptText("Age");
+                genderField.setPromptText("Gender");
+                diseaseField.setPromptText("Disease");
+                doctorField.setPromptText("Doctor");
+                billField.setPromptText("Bill Amount");
 
-        form.add(new Label("Patient ID"), 0, 0);
-        form.add(idField, 1, 0);
+                form.add(new Label("Patient ID"), 0, 0);
+                form.add(idField, 1, 0);
 
-        form.add(new Label("Name"), 2, 0);
-        form.add(nameField, 3, 0);
+                form.add(new Label("Name"), 2, 0);
+                form.add(nameField, 3, 0);
 
-        form.add(new Label("Age"), 0, 1);
-        form.add(ageField, 1, 1);
+                form.add(new Label("Age"), 0, 1);
+                form.add(ageField, 1, 1);
 
-        form.add(new Label("Gender"), 2, 1);
-        form.add(genderField, 3, 1);
+                form.add(new Label("Gender"), 2, 1);
+                form.add(genderField, 3, 1);
 
-        form.add(new Label("Disease"), 0, 2);
-        form.add(diseaseField, 1, 2);
+                form.add(new Label("Disease"), 0, 2);
+                form.add(diseaseField, 1, 2);
 
-        form.add(new Label("Doctor"), 2, 2);
-        form.add(doctorField, 3, 2);
+                form.add(new Label("Doctor"), 2, 2);
+                form.add(doctorField, 3, 2);
 
-        form.add(new Label("Bill"), 0, 3);
-        form.add(billField, 1, 3);
+                form.add(new Label("Bill"), 0, 3);
+                form.add(billField, 1, 3);
 
-        // ================= BUTTONS =================
+                // ================= BUTTONS =================
 
-        Button addBtn = new Button("Add Patient");
-        Button deleteBtn = new Button("Delete");
-        Button clearBtn = new Button("Clear");
+                Button addBtn = new Button("Add Patient");
+                Button deleteBtn = new Button("Delete");
+                Button clearBtn = new Button("Clear");
 
-        addBtn.setPrefWidth(140);
-        deleteBtn.setPrefWidth(140);
-        clearBtn.setPrefWidth(140);
+                addBtn.setPrefWidth(140);
+                deleteBtn.setPrefWidth(140);
+                clearBtn.setPrefWidth(140);
 
-        HBox buttonBox =
-                new HBox(15, addBtn, deleteBtn, clearBtn);
+                HBox buttonBox = new HBox(
+                                15,
+                                addBtn,
+                                deleteBtn,
+                                clearBtn);
 
-        buttonBox.setAlignment(Pos.CENTER_LEFT);
+                buttonBox.setAlignment(Pos.CENTER_LEFT);
 
-        form.add(buttonBox, 1, 4, 3, 1);
+                form.add(buttonBox, 1, 4, 3, 1);
 
-        // ================= TABLE =================
+                // ================= TABLE =================
 
-        TableColumn<Patient, Integer> idCol =
-                new TableColumn<>("ID");
+                TableColumn<Patient, Integer> idCol = new TableColumn<>("ID");
 
-        idCol.setCellValueFactory(
-                new PropertyValueFactory<>("patientId")
-        );
+                idCol.setCellValueFactory(
+                                new PropertyValueFactory<>("patientId"));
 
-        TableColumn<Patient, String> nameCol =
-                new TableColumn<>("Name");
+                TableColumn<Patient, String> nameCol = new TableColumn<>("Name");
 
-        nameCol.setCellValueFactory(
-                new PropertyValueFactory<>("name")
-        );
+                nameCol.setCellValueFactory(
+                                new PropertyValueFactory<>("name"));
 
-        TableColumn<Patient, Integer> ageCol =
-                new TableColumn<>("Age");
+                TableColumn<Patient, Integer> ageCol = new TableColumn<>("Age");
 
-        ageCol.setCellValueFactory(
-                new PropertyValueFactory<>("age")
-        );
+                ageCol.setCellValueFactory(
+                                new PropertyValueFactory<>("age"));
 
-        TableColumn<Patient, String> diseaseCol =
-                new TableColumn<>("Disease");
+                TableColumn<Patient, String> diseaseCol = new TableColumn<>("Disease");
 
-        diseaseCol.setCellValueFactory(
-                new PropertyValueFactory<>("disease")
-        );
+                diseaseCol.setCellValueFactory(
+                                new PropertyValueFactory<>("disease"));
 
-        TableColumn<Patient, String> doctorCol =
-                new TableColumn<>("Doctor");
+                TableColumn<Patient, String> doctorCol = new TableColumn<>("Doctor");
 
-        doctorCol.setCellValueFactory(
-                new PropertyValueFactory<>("doctorAssigned")
-        );
+                doctorCol.setCellValueFactory(
+                                new PropertyValueFactory<>("doctorAssigned"));
 
-        table.getColumns().addAll(
-                idCol,
-                nameCol,
-                ageCol,
-                diseaseCol,
-                doctorCol
-        );
+                table.getColumns().addAll(
+                                idCol,
+                                nameCol,
+                                ageCol,
+                                diseaseCol,
+                                doctorCol);
 
-        table.setItems(patientList);
+                table.setItems(patientList);
 
-        table.setColumnResizePolicy(
-                TableView.CONSTRAINED_RESIZE_POLICY
-        );
+                table.setColumnResizePolicy(
+                                TableView.CONSTRAINED_RESIZE_POLICY);
 
-        table.setPrefHeight(400);
+                table.setPrefHeight(400);
 
-        // ================= ACTIONS =================
+                // ================= ACTIONS =================
 
-        addBtn.setOnAction(e -> addPatient());
+                addBtn.setOnAction(e -> addPatient());
 
-        deleteBtn.setOnAction(e -> deletePatient());
+                deleteBtn.setOnAction(e -> deletePatient());
 
-        clearBtn.setOnAction(e -> clearFields());
+                clearBtn.setOnAction(e -> clearFields());
 
-        // ================= ROOT =================
+                // ================= SIDEBAR =================
 
-        VBox root = new VBox(
-                25,
-                title,
-                cardsBox,
-                form,
-                table
-        );
+                VBox sidebar = new VBox(20);
 
-        root.setPadding(new Insets(30));
+                sidebar.setPadding(new Insets(25));
 
-        root.setStyle(
-                "-fx-background-color: #f1f5f9;"
-        );
+                sidebar.setPrefWidth(220);
 
-        // LOAD FILE
-        loadFromFile();
+                sidebar.setStyle(
+                                "-fx-background-color: #0f172a;");
 
-        Scene scene = new Scene(root, 1200, 800);
+                Label logo = new Label("SmartCare HMS");
 
-        scene.getStylesheets().add("style.css");
+                logo.setStyle(
+                                "-fx-text-fill: white;" +
+                                                "-fx-font-size: 22px;" +
+                                                "-fx-font-weight: bold;");
 
-        stage.setTitle("SmartCare HMS");
+                Button dashboardBtn = new Button("Dashboard");
 
-        stage.setScene(scene);
+                Button patientsBtn = new Button("Patients");
 
-        stage.show();
-    }
+                Button doctorsBtn = new Button("Doctors");
 
-    // ================= CARD =================
+                Button appointmentsBtn = new Button("Appointments");
 
-    private VBox createCard(String title, String value) {
+                Button billingBtn = new Button("Billing");
 
-        Label titleLabel = new Label(title);
+                Button[] menuButtons = {
 
-        titleLabel.setStyle(
-                "-fx-font-size: 16px;" +
-                "-fx-text-fill: #64748b;"
-        );
+                                dashboardBtn,
+                                patientsBtn,
+                                doctorsBtn,
+                                appointmentsBtn,
+                                billingBtn
+                };
 
-        Label valueLabel = new Label(value);
+                for (Button btn : menuButtons) {
 
-        valueLabel.setStyle(
-                "-fx-font-size: 26px;" +
-                "-fx-font-weight: bold;"
-        );
+                        btn.setPrefWidth(180);
 
-        VBox card = new VBox(10,
-                titleLabel,
-                valueLabel);
+                        btn.setStyle(
+                                        "-fx-background-color: transparent;" +
+                                                        "-fx-text-fill: white;" +
+                                                        "-fx-font-size: 15px;" +
+                                                        "-fx-alignment: CENTER-LEFT;");
+                }
 
-        card.setPadding(new Insets(20));
+                sidebar.getChildren().addAll(
 
-        card.setPrefWidth(220);
+                                logo,
+                                dashboardBtn,
+                                patientsBtn,
+                                doctorsBtn,
+                                appointmentsBtn,
+                                billingBtn);
 
-        card.setStyle(
-                "-fx-background-color: white;" +
-                "-fx-background-radius: 16;" +
-                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08),10,0,0,4);"
-        );
+                // ================= MAIN CONTENT =================
 
-        return card;
-    }
+                VBox content = new VBox(
 
-    // ================= ADD PATIENT =================
+                                25,
+                                title,
+                                cardsBox,
+                                form,
+                                table);
 
-    private void addPatient() {
+                content.setPadding(new Insets(30));
 
-        try {
+                content.setStyle(
+                                "-fx-background-color: #f1f5f9;");
 
-            Patient patient = new Patient(
+                // ================= ROOT =================
 
-                    Integer.parseInt(idField.getText()),
-                    nameField.getText(),
-                    Integer.parseInt(ageField.getText()),
-                    genderField.getText(),
-                    diseaseField.getText(),
-                    doctorField.getText(),
-                    Double.parseDouble(billField.getText())
-            );
+                BorderPane root = new BorderPane();
 
-            patientList.add(patient);
+                root.setLeft(sidebar);
 
-            saveToFile();
+                root.setCenter(content);
 
-            clearFields();
+                // ================= LOAD FILE =================
 
-        } catch (Exception e) {
+                loadFromFile();
 
-            showAlert("Please enter valid data!");
+                // ================= SCENE =================
+
+                Scene scene = new Scene(root, 1400, 850);
+
+                scene.getStylesheets().add("style.css");
+
+                stage.setTitle("SmartCare HMS");
+
+                stage.setScene(scene);
+
+                stage.show();
         }
-    }
 
-    // ================= DELETE =================
+        // ================= CARD =================
 
-    private void deletePatient() {
+        private VBox createCard(String title, String value) {
 
-        Patient selected =
-                table.getSelectionModel().getSelectedItem();
+                Label titleLabel = new Label(title);
 
-        if (selected != null) {
+                titleLabel.setStyle(
+                                "-fx-font-size: 16px;" +
+                                                "-fx-text-fill: #64748b;");
 
-            patientList.remove(selected);
+                Label valueLabel = new Label(value);
 
-            saveToFile();
+                valueLabel.setStyle(
+                                "-fx-font-size: 26px;" +
+                                                "-fx-font-weight: bold;");
 
-        } else {
+                VBox card = new VBox(
+                                10,
+                                titleLabel,
+                                valueLabel);
 
-            showAlert("Select patient first!");
+                card.setPadding(new Insets(20));
+
+                card.setPrefWidth(220);
+
+                card.setStyle(
+                                "-fx-background-color: white;" +
+                                                "-fx-background-radius: 16;" +
+                                                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08),10,0,0,4);");
+
+                return card;
         }
-    }
 
-    // ================= CLEAR =================
+        // ================= ADD PATIENT =================
 
-    private void clearFields() {
+        private void addPatient() {
 
-        idField.clear();
-        nameField.clear();
-        ageField.clear();
-        genderField.clear();
-        diseaseField.clear();
-        doctorField.clear();
-        billField.clear();
-    }
+                try {
 
-    // ================= ALERT =================
+                        Patient patient = new Patient(
 
-    private void showAlert(String message) {
+                                        Integer.parseInt(idField.getText()),
+                                        nameField.getText(),
+                                        Integer.parseInt(ageField.getText()),
+                                        genderField.getText(),
+                                        diseaseField.getText(),
+                                        doctorField.getText(),
+                                        Double.parseDouble(billField.getText()));
 
-        Alert alert =
-                new Alert(Alert.AlertType.ERROR);
+                        patientList.add(patient);
 
-        alert.setContentText(message);
+                        saveToFile();
 
-        alert.show();
-    }
+                        clearFields();
 
-    // ================= SAVE FILE =================
+                } catch (Exception e) {
 
-    private void saveToFile() {
-
-        try {
-
-            BufferedWriter writer =
-                    new BufferedWriter(
-                            new FileWriter("patients.txt")
-                    );
-
-            for (Patient p : patientList) {
-
-                writer.write(
-                        p.getPatientId() + "," +
-                        p.getName() + "," +
-                        p.getAge() + "," +
-                        p.getGender() + "," +
-                        p.getDisease() + "," +
-                        p.getDoctorAssigned() + "," +
-                        p.getBillAmount()
-                );
-
-                writer.newLine();
-            }
-
-            writer.close();
-
-        } catch (IOException e) {
-
-            showAlert("Error Saving File!");
+                        showAlert("Please enter valid data!");
+                }
         }
-    }
 
-    // ================= LOAD FILE =================
+        // ================= DELETE PATIENT =================
 
-    private void loadFromFile() {
+        private void deletePatient() {
 
-        try {
+                Patient selectedPatient = table.getSelectionModel().getSelectedItem();
 
-            File file = new File("patients.txt");
+                if (selectedPatient != null) {
 
-            if (!file.exists()) {
-                return;
-            }
+                        patientList.remove(selectedPatient);
 
-            BufferedReader reader =
-                    new BufferedReader(
-                            new FileReader(file)
-                    );
+                        saveToFile();
 
-            String line;
+                } else {
 
-            while ((line = reader.readLine()) != null) {
-
-                String[] data = line.split(",");
-
-                Patient patient = new Patient(
-
-                        Integer.parseInt(data[0]),
-                        data[1],
-                        Integer.parseInt(data[2]),
-                        data[3],
-                        data[4],
-                        data[5],
-                        Double.parseDouble(data[6])
-                );
-
-                patientList.add(patient);
-            }
-
-            reader.close();
-
-        } catch (IOException e) {
-
-            showAlert("Error Loading File!");
+                        showAlert("Select patient first!");
+                }
         }
-    }
 
-    public static void main(String[] args) {
+        // ================= CLEAR =================
 
-        launch();
-    }
+        private void clearFields() {
+
+                idField.clear();
+                nameField.clear();
+                ageField.clear();
+                genderField.clear();
+                diseaseField.clear();
+                doctorField.clear();
+                billField.clear();
+        }
+
+        // ================= ALERT =================
+
+        private void showAlert(String message) {
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+
+                alert.setContentText(message);
+
+                alert.show();
+        }
+
+        // ================= SAVE FILE =================
+
+        private void saveToFile() {
+
+                try {
+
+                        BufferedWriter writer = new BufferedWriter(
+                                        new FileWriter("patients.txt"));
+
+                        for (Patient p : patientList) {
+
+                                writer.write(
+                                                p.getPatientId() + "," +
+                                                                p.getName() + "," +
+                                                                p.getAge() + "," +
+                                                                p.getGender() + "," +
+                                                                p.getDisease() + "," +
+                                                                p.getDoctorAssigned() + "," +
+                                                                p.getBillAmount());
+
+                                writer.newLine();
+                        }
+
+                        writer.close();
+
+                } catch (IOException e) {
+
+                        showAlert("Error Saving File!");
+                }
+        }
+
+        // ================= LOAD FILE =================
+
+        private void loadFromFile() {
+
+                try {
+
+                        File file = new File("patients.txt");
+
+                        if (!file.exists()) {
+                                return;
+                        }
+
+                        BufferedReader reader = new BufferedReader(
+                                        new FileReader(file));
+
+                        String line;
+
+                        while ((line = reader.readLine()) != null) {
+
+                                String[] data = line.split(",");
+
+                                Patient patient = new Patient(
+
+                                                Integer.parseInt(data[0]),
+                                                data[1],
+                                                Integer.parseInt(data[2]),
+                                                data[3],
+                                                data[4],
+                                                data[5],
+                                                Double.parseDouble(data[6]));
+
+                                patientList.add(patient);
+                        }
+
+                        reader.close();
+
+                } catch (IOException e) {
+
+                        showAlert("Error Loading File!");
+                }
+        }
+
+        public static void main(String[] args) {
+
+                launch();
+        }
 }
